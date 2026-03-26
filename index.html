@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andromeda Stack</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #040810;
+      --surface: #080f1e;
+      --border: rgba(99, 160, 255, 0.12);
+      --accent: #4f8cff;
+      --accent-glow: rgba(79, 140, 255, 0.35);
+      --text: #e8edf5;
+      --muted: #7a8aaa;
+      --star: rgba(255, 255, 255, 0.7);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Stars ── */
+    #stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(4, 8, 16, 0.75);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--accent); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 7rem 2rem 4rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(79, 140, 255, 0.1);
+      border: 1px solid rgba(79, 140, 255, 0.3);
+      border-radius: 2rem;
+      padding: 0.35rem 1rem;
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 .gradient {
+      background: linear-gradient(135deg, #a0c4ff 0%, #4f8cff 40%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subheadline {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    /* ── CTA / Email form ── */
+    .cta-form {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 3.5rem;
+    }
+
+    .cta-form input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.85rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .cta-form input::placeholder { color: var(--muted); }
+
+    .cta-form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn {
+      padding: 0.85rem 1.6rem;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background: #6aa3ff;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .success-msg {
+      display: none;
+      color: #5cffa0;
+      font-size: 0.9rem;
+      margin-top: -2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Stats strip ── */
+    .stats {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      position: relative;
+      z-index: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 2rem;
+    }
+
+    /* ── Features ── */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 3.5rem;
+      line-height: 1.7;
+      font-size: 0.97rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(79, 140, 255, 0.4);
+      box-shadow: 0 8px 40px rgba(79, 140, 255, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .logo { font-size: 0.95rem; }
+
+    footer p {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    footer .links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    footer .links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.2s;
+    }
+
+    footer .links a:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+      nav ul { display: none; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<nav>
+  <a class="logo" href="#">Andromeda<span>Stack</span></a>
+  <ul>
+    <li><a href="#features">Products</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#signup">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="badge">Early Access — Coming Soon</div>
+
+  <h1>
+    Built for the<br />
+    <span class="gradient">Edge of What's Possible</span>
+  </h1>
+
+  <p class="subheadline">
+    Andromeda Stack is building next-generation tools for finance, astronomy,
+    and digital systems — where precision meets scale.
+  </p>
+
+  <form class="cta-form" id="signup" onsubmit="handleSignup(event)">
+    <input type="email" id="emailInput" placeholder="Enter your email" required />
+    <button class="btn" type="submit">Get Early Access</button>
+  </form>
+
+  <p class="success-msg" id="successMsg">You're on the list. We'll be in touch.</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">∞</div>
+      <div class="stat-label">Possibilities</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">3</div>
+      <div class="stat-label">Core Verticals</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">1</div>
+      <div class="stat-label">Mission</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Features ── -->
+<section class="section" id="features">
+  <p class="section-label">What We're Building</p>
+  <h2 class="section-title">Three Domains. One Stack.</h2>
+  <p class="section-sub">
+    We engineer tools that operate at the intersection of deep data,
+    real-time systems, and the cosmos.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>Financial Systems</h3>
+      <p>
+        Algorithmic trading infrastructure, real-time market data pipelines,
+        and risk analytics built for speed and reliability.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔭</div>
+      <h3>Astronomy Tools</h3>
+      <p>
+        Data processing and visualization tools for astronomical datasets —
+        from sky surveys to satellite telemetry.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>Digital Infrastructure</h3>
+      <p>
+        High-performance backends, developer tooling, and platform engineering
+        for the next generation of applications.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── About ── -->
+<section class="section" id="about">
+  <p class="section-label">Our Mission</p>
+  <h2 class="section-title">Reaching Further</h2>
+  <p class="section-sub">
+    Just as Andromeda is the galaxy we're reaching toward, we build software
+    that extends human capability — making complex systems simple, fast, and
+    accessible to those bold enough to use them.
+  </p>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <a class="logo" href="#">Andromeda<span>Stack</span></a>
+  <p>© 2026 Andromeda Stack. All rights reserved.</p>
+  <div class="links">
+    <a href="mailto:hello@andromedastack.com">hello@andromedastack.com</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+<script>
+  /* ── Starfield ── */
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = Array.from({ length: 220 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.2,
+      a: Math.random(),
+      speed: Math.random() * 0.004 + 0.001,
+      phase: Math.random() * Math.PI * 2,
+    }));
+  }
+
+  function drawStars(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      const alpha = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200, 220, 255, ${alpha})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+  }
+
+  resize();
+  initStars();
+  requestAnimationFrame(drawStars);
+  window.addEventListener('resize', () => { resize(); initStars(); });
+
+  /* ── Email signup ── */
+  function handleSignup(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn');
+    btn.textContent = 'Joined!';
+    btn.style.background = '#22c55e';
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('emailInput').value = '';
+    setTimeout(() => {
+      btn.textContent = 'Get Early Access';
+      btn.style.background = '';
+    }, 3000);
+  }
+</script>
+
+</body>
+</html>
