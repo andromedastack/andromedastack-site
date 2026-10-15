@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Andromeda Stack</title>
+  <title>AndromedaStack | AI Automation for Contractors &amp; Home Services</title>
+  <meta name="description" content="AndromedaStack builds AI-powered quoting, CRM and workflow systems for contractors and home services businesses. Based in Beaumont, Alberta." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #040810;
       --surface: #080f1e;
+      --surface-2: #0c1528;
       --border: rgba(99, 160, 255, 0.12);
+      --border-strong: rgba(99, 160, 255, 0.3);
       --accent: #4f8cff;
       --accent-glow: rgba(79, 140, 255, 0.35);
       --text: #e8edf5;
-      --muted: #7a8aaa;
-      --star: rgba(255, 255, 255, 0.7);
+      --muted: #8796b4;
     }
 
     html { scroll-behavior: smooth; }
@@ -26,442 +28,463 @@
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
+      line-height: 1.5;
     }
 
-    /* ── Stars ── */
-    #stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
+    a { color: inherit; }
 
-    /* ── Nav ── */
+    /* Stars */
+    #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+    /* Nav */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 2.5rem;
-      background: rgba(4, 8, 16, 0.75);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(4, 8, 16, 0.78);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
     }
-
-    .logo {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: var(--text);
-      text-decoration: none;
-    }
-
+    .logo { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.04em; color: var(--text); text-decoration: none; }
     .logo span { color: var(--accent); }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-    }
-
-    nav ul a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.02em;
-      transition: color 0.2s;
-    }
-
+    nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+    nav ul a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
     nav ul a:hover { color: var(--text); }
-
-    /* ── Hero ── */
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 7rem 2rem 4rem;
+    .nav-cta {
+      padding: 0.55rem 1.1rem; border-radius: 0.5rem;
+      background: var(--accent); color: #fff; text-decoration: none;
+      font-size: 0.88rem; font-weight: 600; white-space: nowrap;
+      transition: background 0.2s, box-shadow 0.2s;
     }
+    .nav-cta:hover { background: #6aa3ff; box-shadow: 0 0 20px var(--accent-glow); }
 
+    /* Hero */
+    .hero {
+      position: relative; z-index: 1; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 1.5rem 4rem;
+    }
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(79, 140, 255, 0.1);
-      border: 1px solid rgba(79, 140, 255, 0.3);
-      border-radius: 2rem;
-      padding: 0.35rem 1rem;
-      font-size: 0.78rem;
-      color: var(--accent);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(79, 140, 255, 0.1); border: 1px solid var(--border-strong);
+      border-radius: 2rem; padding: 0.4rem 1rem;
+      font-size: 0.78rem; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase;
       margin-bottom: 2rem;
     }
-
     .badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s infinite;
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); animation: pulse 2s infinite;
     }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.7); }
-    }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
 
     h1 {
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
+      font-size: clamp(2.4rem, 6.2vw, 4.8rem); font-weight: 800; line-height: 1.08;
+      letter-spacing: -0.02em; margin-bottom: 1.5rem; max-width: 980px;
     }
-
-    h1 .gradient {
+    .gradient {
       background: linear-gradient(135deg, #a0c4ff 0%, #4f8cff 40%, #a78bfa 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-
     .subheadline {
-      font-size: clamp(1rem, 2.2vw, 1.25rem);
-      color: var(--muted);
-      max-width: 560px;
-      line-height: 1.7;
-      margin-bottom: 3rem;
+      font-size: clamp(1rem, 2.1vw, 1.2rem); color: var(--muted);
+      max-width: 640px; line-height: 1.7; margin-bottom: 2.5rem;
     }
 
-    /* ── CTA / Email form ── */
-    .cta-form {
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-      max-width: 480px;
-      margin-bottom: 3.5rem;
-    }
-
-    .cta-form input {
-      flex: 1;
-      min-width: 220px;
-      padding: 0.85rem 1.2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 0.5rem;
-      color: var(--text);
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .cta-form input::placeholder { color: var(--muted); }
-
-    .cta-form input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
+    .hero-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin-bottom: 4rem; }
     .btn {
-      padding: 0.85rem 1.6rem;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      white-space: nowrap;
+      display: inline-block; padding: 0.95rem 1.7rem;
+      background: var(--accent); color: #fff; text-decoration: none;
+      font-size: 0.98rem; font-weight: 600; border-radius: 0.5rem;
       transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
     }
-
-    .btn:hover {
-      background: #6aa3ff;
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-
+    .btn:hover { background: #6aa3ff; box-shadow: 0 0 24px var(--accent-glow); }
     .btn:active { transform: scale(0.97); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border-strong); color: var(--text); }
+    .btn-ghost:hover { background: rgba(79, 140, 255, 0.1); box-shadow: none; }
 
-    .success-msg {
-      display: none;
-      color: #5cffa0;
-      font-size: 0.9rem;
-      margin-top: -2rem;
-      margin-bottom: 2rem;
-    }
-
-    /* ── Stats strip ── */
     .stats {
-      display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem;
+      width: 100%; max-width: 900px;
     }
-
     .stat {
-      text-align: center;
+      background: rgba(8, 15, 30, 0.7); border: 1px solid var(--border);
+      border-radius: 0.9rem; padding: 1.2rem 0.8rem; text-align: center;
     }
+    .stat-value { font-size: 1.7rem; font-weight: 700; }
+    .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em; margin-top: 0.3rem; line-height: 1.4; }
 
-    .stat-value {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--text);
-    }
+    /* Sections */
+    .divider { position: relative; z-index: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-strong), transparent); margin: 0 2rem; }
+    .section { position: relative; z-index: 1; padding: 6rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .section-label { text-align: center; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .section-title { text-align: center; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; margin-bottom: 1rem; }
+    .section-sub { text-align: center; color: var(--muted); max-width: 600px; margin: 0 auto 3.5rem; line-height: 1.7; font-size: 0.98rem; }
 
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-top: 0.2rem;
-    }
-
-    /* ── Divider ── */
-    .divider {
-      position: relative;
-      z-index: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin: 0 2rem;
-    }
-
-    /* ── Features ── */
-    .section {
-      position: relative;
-      z-index: 1;
-      padding: 6rem 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      text-align: center;
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .section-sub {
-      text-align: center;
-      color: var(--muted);
-      max-width: 520px;
-      margin: 0 auto 3.5rem;
-      line-height: 1.7;
-      font-size: 0.97rem;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; }
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      padding: 2rem;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem;
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
+    .card:hover { border-color: rgba(79, 140, 255, 0.4); box-shadow: 0 8px 40px rgba(79, 140, 255, 0.1); transform: translateY(-3px); }
+    .card-icon { font-size: 1.7rem; margin-bottom: 1rem; }
+    .card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.6rem; }
+    .card p { color: var(--muted); font-size: 0.92rem; line-height: 1.65; }
 
-    .card:hover {
-      border-color: rgba(79, 140, 255, 0.4);
-      box-shadow: 0 8px 40px rgba(79, 140, 255, 0.1);
-      transform: translateY(-3px);
+    .card .problem { margin-bottom: 0.9rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--border); }
+    .card .problem span, .card .fix-label { display: block; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .card .problem span { color: #f59e8b; }
+    .card .fix-label { color: var(--accent); }
+
+    /* Results */
+    .result { display: flex; flex-direction: column; }
+    .result-figure { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.2rem; }
+    .result-tag { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 1rem; }
+
+    .example {
+      margin-top: 2rem; background: var(--surface-2); border: 1px solid var(--border-strong);
+      border-radius: 1rem; padding: 2rem;
+    }
+    .example h3 { font-size: 1.2rem; margin-bottom: 0.4rem; }
+    .example-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6; }
+    .example-rows { display: grid; }
+    .example-row {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+      padding: 0.85rem 0; border-bottom: 1px solid var(--border); font-size: 0.95rem;
+    }
+    .example-row span { color: var(--muted); }
+    .example-row strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .example-row.total { border-bottom: none; padding-top: 1.1rem; font-size: 1.1rem; }
+    .example-row.total span { color: var(--text); font-weight: 600; }
+    .example-row.total strong { font-size: 1.5rem; }
+    .footnote { color: var(--muted); font-size: 0.78rem; margin-top: 1.2rem; line-height: 1.6; }
+
+    .guarantee {
+      margin-top: 1.5rem; padding: 1.2rem 1.5rem; border-radius: 0.8rem;
+      border: 1px solid rgba(92, 255, 160, 0.3); background: rgba(92, 255, 160, 0.06);
+      color: var(--muted); font-size: 0.92rem; line-height: 1.6;
+    }
+    .guarantee strong { color: #7dffb5; }
+
+    .pains { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+    .pain { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid #f59e8b; border-radius: 0 0.8rem 0.8rem 0; padding: 1.2rem 1.3rem; color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+
+    .stack { max-width: 820px; margin: 0 auto; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 1.2rem; padding: 1rem 2rem 2rem; }
+    .stack-row { display: flex; justify-content: space-between; gap: 1.5rem; padding: 1.3rem 0; border-bottom: 1px solid var(--border); }
+    .stack-row h3 { font-size: 1.05rem; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+    .stack-row p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+    .stack-val { white-space: nowrap; color: var(--accent); font-weight: 600; font-size: 0.92rem; padding-top: 0.15rem; }
+    .bonus-tag { font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(92,255,160,0.12); color: #7dffb5; border: 1px solid rgba(92,255,160,0.3); border-radius: 1rem; padding: 0.15rem 0.55rem; }
+    .stack-total { display: flex; justify-content: space-between; padding: 1.3rem 0 0.6rem; font-size: 1.05rem; color: var(--muted); }
+    .strike { text-decoration: line-through; color: var(--muted); font-size: 1.3rem; }
+    .stack-price { font-size: 1.15rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .stack-cta { display: block; text-align: center; }
+    .scarcity { text-align: center; color: #f5c58b; font-size: 0.85rem; margin-top: 1rem; }
+
+    .guarantees { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    .g-card { border: 1px solid rgba(92, 255, 160, 0.3); background: rgba(92, 255, 160, 0.05); border-radius: 1rem; padding: 2rem; }
+    .g-badge { color: #7dffb5; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.8rem; }
+    .g-card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; }
+    .g-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+
+    .faq { max-width: 760px; margin: 2.5rem auto 0; display: grid; gap: 0.8rem; }
+    .faq details { background: var(--surface); border: 1px solid var(--border); border-radius: 0.8rem; padding: 1.1rem 1.3rem; }
+    .faq summary { cursor: pointer; font-weight: 600; font-size: 0.98rem; }
+    .faq details p { color: var(--muted); margin-top: 0.7rem; line-height: 1.65; font-size: 0.93rem; }
+
+    @media (max-width: 640px) {
+      .stack { padding: 0.5rem 1.2rem 1.5rem; }
+      .stack-row { flex-direction: column; gap: 0.5rem; }
     }
 
-    .card-icon {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
+    /* Process */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; counter-reset: step; }
+    .step { position: relative; padding: 1.8rem 1.6rem; border-left: 2px solid var(--border-strong); background: linear-gradient(90deg, rgba(79,140,255,0.06), transparent); border-radius: 0 0.8rem 0.8rem 0; }
+    .step-num { font-size: 0.8rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+    .step h3 { font-size: 1.02rem; margin-bottom: 0.5rem; }
+    .step p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
 
-    .card h3 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin-bottom: 0.6rem;
-    }
+    /* About */
+    .about { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: center; }
+    .about-card { background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem; }
+    .about-card h3 { font-size: 1.3rem; margin-bottom: 0.2rem; }
+    .about-card .role { color: var(--accent); font-size: 0.9rem; margin-bottom: 1.4rem; }
+    .about-card ul { list-style: none; display: grid; gap: 0.7rem; }
+    .about-card li { color: var(--muted); font-size: 0.9rem; padding-left: 1.4rem; position: relative; }
+    .about-card li::before { content: '✦'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem; top: 0.1rem; }
+    .about-text h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); margin-bottom: 1.2rem; }
+    .about-text p { color: var(--muted); line-height: 1.75; margin-bottom: 1rem; font-size: 0.98rem; }
 
-    .card p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.65;
+    /* Final CTA */
+    .final-cta {
+      text-align: center; background: var(--surface-2); border: 1px solid var(--border-strong);
+      border-radius: 1.2rem; padding: 3.5rem 2rem;
     }
+    .final-cta h2 { font-size: clamp(1.6rem, 3.5vw, 2.3rem); margin-bottom: 1rem; }
+    .final-cta p { color: var(--muted); max-width: 540px; margin: 0 auto 2rem; line-height: 1.7; }
+    .final-cta .small { font-size: 0.85rem; margin-top: 1.2rem; margin-bottom: 0; }
 
-    /* ── Footer ── */
+    /* Footer */
     footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
+      position: relative; z-index: 1; border-top: 1px solid var(--border);
+      padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
     }
-
     footer .logo { font-size: 0.95rem; }
-
-    footer p {
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-
-    footer .links {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    footer .links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.82rem;
-      transition: color 0.2s;
-    }
-
+    footer p, footer .links a { color: var(--muted); font-size: 0.84rem; text-decoration: none; }
+    footer .links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
     footer .links a:hover { color: var(--text); }
 
-    @media (max-width: 600px) {
-      nav ul { display: none; }
-      footer { flex-direction: column; align-items: flex-start; }
+    @media (max-width: 820px) {
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .about { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0.9rem 1rem; }
+      nav ul li:not(:last-child) { display: none; }
+      .section { padding: 4.5rem 1rem; }
+      footer { flex-direction: column; align-items: flex-start; padding: 2rem 1rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .badge::before { animation: none; }
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
 <body>
 
-<canvas id="stars"></canvas>
+<canvas id="stars" aria-hidden="true"></canvas>
 
 <nav>
   <a class="logo" href="#">Andromeda<span>Stack</span></a>
   <ul>
-    <li><a href="#features">Products</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#signup">Contact</a></li>
+    <li><a href="#offer">The offer</a></li>
+    <li><a href="#guarantee">Guarantee</a></li>
+    <li><a href="#results">What it's worth</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a class="nav-cta" href="#contact">Free audit</a></li>
   </ul>
 </nav>
 
-<!-- ── Hero ── -->
+<!-- Hero -->
 <section class="hero">
-  <div class="badge">Early Access — Coming Soon</div>
+  <div class="badge">For contractors &amp; home services · Live in 14 days</div>
 
   <h1>
-    Built for the<br />
-    <span class="gradient">Edge of What's Possible</span>
+    Get your evenings back.<br />
+    <span class="gradient">Win more jobs.</span>
   </h1>
 
   <p class="subheadline">
-    Andromeda Stack is building next-generation tools for finance, astronomy,
-    and digital systems — where precision meets scale.
+    A done-for-you system that answers every lead, follows up every quote
+    and brings in more 5-star reviews, without you learning a new app.
   </p>
 
-  <form class="cta-form" id="signup" onsubmit="handleSignup(event)">
-    <input type="email" id="emailInput" placeholder="Enter your email" required />
-    <button class="btn" type="submit">Get Early Access</button>
-  </form>
-
-  <p class="success-msg" id="successMsg">You're on the list. We'll be in touch.</p>
+  <div class="hero-actions">
+    <a class="btn" href="#contact">Get my free Missed-Revenue Audit</a>
+    <a class="btn btn-ghost" href="#offer">See the offer</a>
+  </div>
 
   <div class="stats">
-    <div class="stat">
-      <div class="stat-value">∞</div>
-      <div class="stat-label">Possibilities</div>
+    <div class="stat"><div class="stat-value">14 days</div><div class="stat-label">from first call to live</div></div>
+    <div class="stat"><div class="stat-value">&lt; 5 min</div><div class="stat-label">lead response, 24/7</div></div>
+    <div class="stat"><div class="stat-value">100%</div><div class="stat-label">of quotes followed up</div></div>
+    <div class="stat"><div class="stat-value">45 min</div><div class="stat-label">of your time to set up</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Problem -->
+<section class="section" id="problem">
+  <p class="section-label">Sound familiar?</p>
+  <h2 class="section-title">You're losing jobs you already earned</h2>
+  <div class="pains">
+    <div class="pain">Calls go to voicemail while you're on a roof, and the homeowner books someone else.</div>
+    <div class="pain">Quotes go out and never get chased, because you're busy doing the work.</div>
+    <div class="pain">Evenings and weekends disappear into estimates, invoices and paperwork.</div>
+    <div class="pain">Happy customers never leave reviews, so competitors look better on Google.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Offer -->
+<section class="section" id="offer">
+  <p class="section-label">The offer</p>
+  <h2 class="section-title">The 14-Day Win More Jobs System</h2>
+  <p class="section-sub">Everything below, built and running for you in 14 days.</p>
+
+  <div class="stack">
+      <div class="stack-row">
+        <div><h3>Instant Lead Responder</h3><p>Every call and web enquiry answered in under 5 minutes, missed calls texted back, estimates booked into your calendar.</p></div>
+        <div class="stack-val">$3,000 value</div>
+      </div>
+      <div class="stack-row">
+        <div><h3>Quote Chaser</h3><p>Every quote followed up automatically on day 2, 5 and 10 until it's won or lost. No more quotes going cold.</p></div>
+        <div class="stack-val">$3,000 value</div>
+      </div>
+      <div class="stack-row">
+        <div><h3>5-Star Review Engine</h3><p>A review request after every completed job, plus a referral nudge, so you climb past competitors on Google.</p></div>
+        <div class="stack-val">$1,500 value</div>
+      </div>
+      <div class="stack-row">
+        <div><h3><span class="bonus-tag">Bonus</span>Missed-Revenue Audit</h3><p>Before we build, I dig through your past quotes to show exactly how much revenue is sitting unclaimed.</p></div>
+        <div class="stack-val">$500 value</div>
+      </div>
+      <div class="stack-row">
+        <div><h3><span class="bonus-tag">Bonus</span>Follow-Up Scripts in Your Voice</h3><p>Every text and email written to sound like you, not a robot. Done for you.</p></div>
+        <div class="stack-val">$500 value</div>
+      </div>
+      <div class="stack-row">
+        <div><h3><span class="bonus-tag">Bonus</span>30 Days of Priority Support</h3><p>Direct line to me for tweaks and questions while your system beds in.</p></div>
+        <div class="stack-val">$750 value</div>
+      </div>
+    <div class="stack-total">
+      <span>Total value</span><strong class="strike">$9,250</strong>
     </div>
-    <div class="stat">
-      <div class="stat-value">3</div>
-      <div class="stat-label">Core Verticals</div>
+    <div class="stack-price">
+      Your investment: a fraction of that, usually less than <strong class="gradient">one extra job a month</strong>.
     </div>
-    <div class="stat">
-      <div class="stat-value">1</div>
-      <div class="stat-label">Mission</div>
+    <a class="btn stack-cta" href="#contact">Get my free Missed-Revenue Audit</a>
+    <p class="scarcity">I build for a maximum of 4 new contractors a month, so every system gets done right.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Guarantee -->
+<section class="section" id="guarantee">
+  <p class="section-label">Zero risk</p>
+  <h2 class="section-title">Two guarantees, so you can't lose</h2>
+  <div class="guarantees">
+    <div class="g-card">
+      <div class="g-badge">⏱ Speed guarantee</div>
+      <h3>Live in 14 days, or your setup is free</h3>
+      <p>If your system isn't up and running within 14 days of our kickoff call, you don't pay the setup fee.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-badge">💰 Results guarantee</div>
+      <h3>Pays for itself in 90 days, or I work for free</h3>
+      <p>If the system hasn't won you back its cost in new jobs within 90 days, I'll keep working on it at no charge until it does.</p>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ── Features ── -->
-<section class="section" id="features">
-  <p class="section-label">What We're Building</p>
-  <h2 class="section-title">Three Domains. One Stack.</h2>
-  <p class="section-sub">
-    We engineer tools that operate at the intersection of deep data,
-    real-time systems, and the cosmos.
-  </p>
+<!-- Results -->
+<section class="section" id="results">
+  <p class="section-label">What it's worth</p>
+  <h2 class="section-title">A contractor sending 530 quotes a year</h2>
+  <p class="section-sub">Average job $4,200, 25% margin. Your audit shows your real numbers.</p>
 
+  <div class="example">
+    <div class="example-rows">
+      <div class="example-row"><span>Extra jobs from winning 5% more quotes</span><strong>26 jobs</strong></div>
+      <div class="example-row"><span>Added revenue</span><strong>≈ $109,200</strong></div>
+      <div class="example-row"><span>Added profit</span><strong>≈ $27,300</strong></div>
+      <div class="example-row"><span>Admin time saved with faster estimating (add-on)</span><strong>265 hours</strong></div>
+      <div class="example-row total"><span>Potential yearly gain</span><strong class="gradient">≈ $47,200</strong></div>
+    </div>
+    <p class="footnote">* Illustrative estimate, including 265 hours valued at $75/hr. The 50% estimating time saving comes from a quoting system I built for a real home services business; your results will vary.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Add-ons -->
+<section class="section" id="services">
+  <p class="section-label">Add-ons</p>
+  <h2 class="section-title">Once you're winning more jobs</h2>
+  <p class="section-sub">Take back even more time with these, built around the tools you already use.</p>
   <div class="cards">
     <div class="card">
-      <div class="card-icon">📈</div>
-      <h3>Financial Systems</h3>
-      <p>
-        Algorithmic trading infrastructure, real-time market data pipelines,
-        and risk analytics built for speed and reliability.
-      </p>
+      <div class="card-icon">📐</div>
+      <h3>Faster estimating</h3>
+      <p>Your pricing built in. Professional quotes in minutes, not an hour.</p>
     </div>
     <div class="card">
-      <div class="card-icon">🔭</div>
-      <h3>Astronomy Tools</h3>
-      <p>
-        Data processing and visualization tools for astronomical datasets —
-        from sky surveys to satellite telemetry.
-      </p>
+      <div class="card-icon">🔗</div>
+      <h3>No double entry</h3>
+      <p>A signed quote flows straight into the work order, schedule and invoice.</p>
     </div>
     <div class="card">
-      <div class="card-icon">⚡</div>
-      <h3>Digital Infrastructure</h3>
-      <p>
-        High-performance backends, developer tooling, and platform engineering
-        for the next generation of applications.
-      </p>
+      <div class="card-icon">🗓️</div>
+      <h3>Crew &amp; customer updates</h3>
+      <p>Work orders sent to crews, and customers texted before you arrive.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💵</div>
+      <h3>Get paid faster</h3>
+      <p>Invoices sent on completion, deposits at signing, automatic payment reminders.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>Change orders</h3>
+      <p>E-signed change orders, so extra work always gets billed.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Know your numbers</h3>
+      <p>Pipeline, close rate and profit at a glance.</p>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ── About ── -->
+<!-- About -->
 <section class="section" id="about">
-  <p class="section-label">Our Mission</p>
-  <h2 class="section-title">Reaching Further</h2>
-  <p class="section-sub">
-    Just as Andromeda is the galaxy we're reaching toward, we build software
-    that extends human capability — making complex systems simple, fast, and
-    accessible to those bold enough to use them.
-  </p>
+  <div class="about-text" style="max-width:640px;margin:0 auto;text-align:center">
+    <p class="section-label">Why AndromedaStack</p>
+    <h2>Built by someone who's done the work</h2>
+    <p>
+      I've written the quotes and chased the signatures myself, so I build
+      systems that fit how contractors actually work. Mitchell Pullin, Beaumont, Alberta.
+    </p>
+  </div>
 </section>
 
-<!-- ── Footer ── -->
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <p class="section-label">Questions</p>
+  <h2 class="section-title">Before you ask</h2>
+  <div class="faq">
+    <details><summary>I'm not good with tech. Will I have to learn something new?</summary><p>No. It runs in the background by text and email. Your part is one 45-minute call; I handle the rest.</p></details>
+    <details><summary>I already use Jobber, Housecall Pro or ServiceTitan.</summary><p>Great. I build around the tools you already have, so nothing gets replaced or migrated.</p></details>
+    <details><summary>What if it doesn't work for my business?</summary><p>That's what the guarantees are for: live in 14 days or the setup is free, and if it hasn't paid for itself in 90 days, I keep working for free.</p></details>
+    <details><summary>Will automated messages annoy my customers?</summary><p>Every message is written in your voice and timed the way a good office manager would follow up, not spammy blasts.</p></details>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="section" id="contact">
+  <div class="final-cta">
+    <h2>Find out how many jobs you're leaving on the table</h2>
+    <p>Book your free Missed-Revenue Audit. I'll show you exactly where leads and quotes are slipping away, whether or not you work with me.</p>
+    <a class="btn" href="mailto:mitchell@andromedastack.com?subject=Free%20Missed-Revenue%20Audit">Get my free Missed-Revenue Audit</a>
+    <p class="small">Only 4 new builds a month · Or email <a href="mailto:mitchell@andromedastack.com">mitchell@andromedastack.com</a></p>
+  </div>
+</section>
+
+<!-- Footer -->
 <footer>
   <a class="logo" href="#">Andromeda<span>Stack</span></a>
-  <p>© 2026 Andromeda Stack. All rights reserved.</p>
+  <p>© 2026 AndromedaStack · Beaumont, Alberta, Canada</p>
   <div class="links">
-    <a href="mailto:hello@andromedastack.com">hello@andromedastack.com</a>
-    <a href="#">Privacy</a>
+    <a href="mailto:mitchell@andromedastack.com">mitchell@andromedastack.com</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
   </div>
 </footer>
 
 <script>
-  /* ── Starfield ── */
+  /* Starfield */
   const canvas = document.getElementById('stars');
   const ctx = canvas.getContext('2d');
   let stars = [];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -473,7 +496,6 @@
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       r: Math.random() * 1.2 + 0.2,
-      a: Math.random(),
       speed: Math.random() * 0.004 + 0.001,
       phase: Math.random() * Math.PI * 2,
     }));
@@ -482,33 +504,19 @@
   function drawStars(t) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const s of stars) {
-      const alpha = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+      const alpha = reduceMotion ? 0.7 : 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(200, 220, 255, ${alpha})`;
       ctx.fill();
     }
-    requestAnimationFrame(drawStars);
+    if (!reduceMotion) requestAnimationFrame(drawStars);
   }
 
   resize();
   initStars();
   requestAnimationFrame(drawStars);
-  window.addEventListener('resize', () => { resize(); initStars(); });
-
-  /* ── Email signup ── */
-  function handleSignup(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.btn');
-    btn.textContent = 'Joined!';
-    btn.style.background = '#22c55e';
-    document.getElementById('successMsg').style.display = 'block';
-    document.getElementById('emailInput').value = '';
-    setTimeout(() => {
-      btn.textContent = 'Get Early Access';
-      btn.style.background = '';
-    }, 3000);
-  }
+  window.addEventListener('resize', () => { resize(); initStars(); if (reduceMotion) drawStars(0); });
 </script>
 
 </body>
