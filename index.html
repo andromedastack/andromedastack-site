@@ -34,7 +34,7 @@
     a { color: inherit; }
 
     /* Stars */
-    #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    #stars { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 0; display: block; }
 
     /* Nav */
     nav {
@@ -260,6 +260,7 @@
     <li><a href="#guarantee">Guarantee</a></li>
     <li><a href="#results">What it's worth</a></li>
     <li><a href="#faq">FAQ</a></li>
+    <li><a href="services.html">Services</a></li>
     <li><a class="nav-cta" href="#contact">Free consultation</a></li>
   </ul>
 </nav>
@@ -296,12 +297,12 @@
 <!-- Problem -->
 <section class="section" id="problem">
   <p class="section-label">Sound familiar?</p>
-  <h2 class="section-title">You work all day, then do paperwork all night</h2>
+  <h2 class="section-title">Working all day, then doing paperwork all night?</h2>
   <div class="pains">
-    <div class="pain">Evenings and weekends disappear into writing estimates at the kitchen table.</div>
-    <div class="pain">The same customer details get typed into your quote, calendar, invoice and QuickBooks.</div>
-    <div class="pain">Invoices go out late, and you spend hours chasing people who still owe you.</div>
-    <div class="pain">Calls go to voicemail while you're on a roof, and the homeowner books someone else.</div>
+    <div class="pain">Are your evenings and weekends disappearing into writing estimates?</div>
+    <div class="pain">Are you typing the same customer details into your quote, calendar, invoice and accounting software?</div>
+    <div class="pain">Are invoices going out late, with hours spent chasing people who still owe you?</div>
+    <div class="pain">Do calls go to voicemail while you're on the job, and the customer books someone else?</div>
   </div>
 </section>
 
@@ -483,49 +484,63 @@
   <div class="links">
     <a href="tel:+18254790614">+1 (825) 479-0614</a>
     <a href="mailto:info@andromedastack.com">info@andromedastack.com</a>
-    <a href="#services">Services</a>
+    <a href="services.html">Services</a>
     <a href="#contact">Contact</a>
   </div>
 </footer>
 
 <script>
-  /* Starfield */
+  /* Starfield: sharp on high-res phone screens, and steady while scrolling on mobile */
   const canvas = document.getElementById('stars');
   const ctx = canvas.getContext('2d');
-  let stars = [];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w = 0, h = 0;
+
+  /* Star positions are stored as fractions of the screen, so resizing never reshuffles them */
+  const stars = Array.from({ length: 220 }, () => ({
+    x: Math.random(),
+    y: Math.random(),
+    r: Math.random() * 1.2 + 0.2,
+    speed: Math.random() * 0.004 + 0.001,
+    phase: Math.random() * Math.PI * 2,
+  }));
 
   function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  function initStars() {
-    stars = Array.from({ length: 220 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.2 + 0.2,
-      speed: Math.random() * 0.004 + 0.001,
-      phase: Math.random() * Math.PI * 2,
-    }));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const newW = window.innerWidth;
+    /* Use the tallest the screen gets, so the mobile address bar hiding/showing doesn't stretch the stars */
+    const newH = Math.max(window.innerHeight, h, document.documentElement.clientHeight);
+    if (newW === w && newH === h) return;
+    w = newW; h = newH;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   function drawStars(t) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, w, h);
     for (const s of stars) {
       const alpha = reduceMotion ? 0.7 : 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
       ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(200, 220, 255, ${alpha})`;
       ctx.fill();
     }
     if (!reduceMotion) requestAnimationFrame(drawStars);
   }
 
+  let lastWidth = window.innerWidth;
+  window.addEventListener('resize', () => {
+    /* A width change (rotation, desktop resize) gets a fresh size; height-only changes from the address bar are ignored */
+    if (window.innerWidth !== lastWidth) { lastWidth = window.innerWidth; h = 0; }
+    resize();
+    if (reduceMotion) drawStars(0);
+  });
+
   resize();
-  initStars();
   requestAnimationFrame(drawStars);
-  window.addEventListener('resize', () => { resize(); initStars(); if (reduceMotion) drawStars(0); });
 </script>
 
 </body>
